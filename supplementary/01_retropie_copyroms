@@ -40,6 +40,8 @@ fi
 [ -d "${UM_MOUNTPOINT}/roms" ] || exit 0
 
 # this could probably need some work, but it should 'work for now', so..
-rsync -azu ${UM_MOUNTPOINT}/roms ${retropie_path}/ >/dev/null 2>&1 || log err "rsync failed to sync ROMS, returned error code $?"
+# rsync -azu ${UM_MOUNTPOINT}/roms ${retropie_path}/ >/dev/null 2>&1 || log err "rsync failed to sync ROMS, returned error code $?"
+touch ${retropie_path}/TEMP.TXT
+echo "THE USB SCRIPT THING RAN ANEW" >> ${retropie_path}/TEMP.TXT
 chown -R ${retro_user} ${retropie_path}/
 chgrp -R ${retro_user} ${retropie_path}/
