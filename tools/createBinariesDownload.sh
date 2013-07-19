@@ -3,6 +3,7 @@
 filelist=()
 
 filelist+=("./RetroPie/supplementary/EmulationStation/emulationstation")
+filelist+=("./RetroPie/supplementary/ES-config/")
 
 filelist+=("`find ./RetroPie/emulatorcores/stella-libretro/ -name "*libretro*.so"`")
 filelist+=("`find ./RetroPie/emulatorcores/nxengine-libretro/ -name "*libretro*.so"`")
@@ -26,7 +27,7 @@ filelist+=("./RetroPie/emulators/RetroArch/retroarch.cfg")
 filelist+=("./RetroPie/emulators/RetroArch/tools/retroarch-joyconfig")
 
 filelist+=("./RetroPie/supplementary/bcm2835-1.14/")
-filelist+=("./RetroPie/supplementary/SNESDev-Rpi/bin/SNESDev")
+filelist+=("./RetroPie/supplementary/SNESDev-Rpi/SNESDev")
 filelist+=("./RetroPie/supplementary/SNESDev-Rpi/scripts/SNESDev")
 filelist+=("./RetroPie/supplementary/dispmanx/build/.libs/")
 
@@ -39,6 +40,7 @@ filelist+=("./RetroPie/emulators/dgen-sdl/installdir/usr/local/share/man/man1/dg
 filelist+=("./RetroPie/emulators/dgen-sdl/installdir/usr/local/share/man/man5/dgenrc.5")
 filelist+=("./RetroPie/emulators/Wolf4SDL-1.7-src/wolf3d")
 filelist+=("./RetroPie/emulators/osmose-0.8.1+rpi20121122/")
+filelist+=("./RetroPie/emulators/gngeo-pi-0.85/installdir/")
 filelist+=("./RetroPie/emulators/gngeo-0.7/installdir/")
 filelist+=("./RetroPie/emulators/vice-2.3.dfsg/installdir/")
 filelist+=("./RetroPie/emulators/uae4all/")
@@ -54,15 +56,30 @@ filelist+=("./RetroPie/emulators/pisnes/zipit")
 filelist+=("./RetroPie/emulators/pisnes/roms/")
 filelist+=("./RetroPie/emulators/pisnes/skins/")
 filelist+=("./RetroPie/emulators/basiliskii/installdir/")
+filelist+=("./RetroPie/emulators/atari800-3.0.0/installdir/")
+filelist+=("./RetroPie/emulators/atari800-3.0.0/README.1ST")
+filelist+=("./RetroPie/emulators/emulators/usp/build/rpi/Release/")
 
+# check if all directories/files exist
+tLen=${#filelist[@]}
+for (( i=0; i<${tLen}; i++ ));
+do
+	if [[ ! -d "${filelist[$i]}" && ! -f "${filelist[$i]}" ]]
+	then
+	  echo "Cannot find directory ${filelist[$i]}."
+	  exit
+	fi
+done
+
+# put everything into an archive file
 tar -c -vf RetroPieSetupBinaries_`date +%d%m%y`.tar ${filelist[0]}
 
-tLen=${#filelist[@]}
 for (( i=1; i<${tLen}; i++ ));
 do
 	tar -r -vf RetroPieSetupBinaries_`date +%d%m%y`.tar ${filelist[$i]}
 done
 
+# compress the archive
 bzip2 RetroPieSetupBinaries_`date +%d%m%y`.tar
 
 echo "Done."
